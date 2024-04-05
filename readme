@@ -1,0 +1,26 @@
+/*
+fecha: 4/4/2024
+autor: Harry Sanchez 
+Materia: Sistemas Operativos 
+Tema: Concurrencia 
+Objetivo: Hacer una metodologia para la implemntacion de la multiplicacion de matices. La idea principal, es construir paso a paso la implementacion para hacer uso de la biblioteca PTHREAD.Se implementa el algoritmo clasico de multiplicacion de matrices para matrices cuadradas, es decir, la dimension de filas es igual a la de la columnas 
+
+A continuación se describen los paso
+ - Reserva de memoria
+ - Creación de punteros para matrices del tipo doble
+ - Asignación de memoria
+ - Ingreso de argumentos de entrada (Dimensión matriz, número de hilos)
+ - Validación argumentos de entrada
+ - Inicializar las matrices
+ - Imprimir las matrices 
+ - Función para inicializar las matrices 
+ - Función para imprimir las matrices 
+ - Algoritmo clásico de multiplicación matrices 
+ - Se verifica el resultado
+ - Función para multiplicación las matrices 
+ - Declaración vector de hilos 
+ - Creación de hilos según tamaño de vector de hilos 
+ - Crear estructura de datos que encapsule los argumentos de entrada de la función MM
+  */
+
+// se declaran las librerias que se quieren usar 
