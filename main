@@ -1,0 +1,136 @@
+/*
+fecha: 4/4/2024
+autor: Harry Sanchez 
+Materia: Sistemas Operativos 
+Tema: Concurrencia 
+Objetivo: Hacer una metodologia para la implemntacion de la multiplicacion de matices. La idea principal, es construir paso a paso la implementacion para hacer uso de la biblioteca PTHREAD.Se implementa el algoritmo clasico de multiplicacion de matrices para matrices cuadradas, es decir, la dimension de filas es igual a la de la columnas 
+
+A continuación se describen los paso
+ - Reserva de memoria
+ - Creación de punteros para matrices del tipo doble
+ - Asignación de memoria
+ - Ingreso de argumentos de entrada (Dimensión matriz, número de hilos)
+ - Validación argumentos de entrada
+ - Inicializar las matrices
+ - Imprimir las matrices 
+ - Función para inicializar las matrices 
+ - Función para imprimir las matrices 
+ - Algoritmo clásico de multiplicación matrices 
+ - Se verifica el resultado
+ - Función para multiplicación las matrices 
+ - Declaración vector de hilos 
+ - Creación de hilos según tamaño de vector de hilos 
+ - Crear estructura de datos que encapsule los argumentos de entrada de la función MM
+  */
+
+// se declaran las librerias que se quieren usar 
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <pthread.h>
+
+
+// definir reserva de memoria 
+#define RESERVA (1024 * 128*64*8)
+
+// se define como static ya que se q
+static double MEM_CHUNK[RESERVA];
+
+// lleno las matrices 
+void initMatrices(int n, double *m1, double *m2, double *m3){
+  for(int i=0; i<n*n; i++){
+    m1[i] = i*1.1;
+    m2[i] = i*2.2;
+    m3[i] = i;
+  }
+};
+
+// imprimes la matriz 
+void imprMatrices(int n, double *matriz){
+  if(n<9){
+    for(int i=0; i<n*n; i++){
+      if(i%n==0) printf("\n");
+      printf(" %f ", matriz[i]);
+    }
+    printf("\n#######################################################\n");
+  } else {
+    printf("\n#######################################################\n");
+  }
+};
+
+// realizas la multiplicacion de matrices 
+
+void *multiMatrices(void *argMM){
+  for(int i=0; i<n; i++){
+    for(int j=0; j<n; j++){
+      double sumaTemp, *pA, *pB;
+      sumaTemp = 0.0;
+      pA = m1 + i*n;
+      pB = m2 + j;
+      for(int k=0; k<n; k++, pA++, pB+=n){
+        sumaTemp += *pA * *pB;
+      }
+      m3[j+i*n] = sumaTemp;
+    }
+  }
+  return 0;
+};
+
+int main(int argc, char *argv[]) {
+// verificacion para que el usuario ingrese de manera correcta los parametros y no salga el error de selmentation fault 
+
+  if (argc<=2){
+    printf("\nNumero argumentos incorrectos  \n");
+    printf("\nSe debe poner $ nombreDeEjecutable n=tamaño , h=numero de hilos \n");
+    return -1;
+  }
+  //creacion de los punteros 
+  double *mA, *mB, *mc; 
+
+  // combierte los valores pasasados por la terminal para poder ejecutar el programa 
+  // es el tamaño 
+  int N = (int) atof(argv[1]);
+  // los hilos 
+  int H = (int) atof(argv[2]);
+
+//verificacion de que los numeros sean mayores a 0 
+  if(N<=0 || H <=0){
+      printf("\n Valores deben ser mayor que cero\n");
+    return -1;	
+  };
+//  aqui se crean se crean las dos matrices, a y b que son las que vamos a multiplicar y en la c es la que vamos a guardar el resulatado, esto se ve en la memoria como una linea recta y vamos saltando en este vector para realizar las operaciones 
+
+  // primera matriz A 
+  mA = MEM_CHUNK;
+  // la segunda matriz 
+  mB = mA + N*N; 
+  // la tercera matriz 
+  mC = mB + N*N; 
+
+  // llamado de la funciones
+
+  //inicializacion de las matrices 
+  initMatrices(N, mA, mB, mC);
+
+  //llamado de funciones de impresion para la matriz a y b 
+  imprMatrices(N, mA);
+  imprMatrices(N, mB);
+
+  // aqui se raliza la creacion de hilos 
+  for(int h=0; h<H; h++){
+      pthread_create(&hilos[h],NULL,multiMatrices,&h);	
+  }
+
+
+  // se llama la funcion para que se multipliquen las matrices 
+  multiMatrices(N, mA, mB, mC);
+
+  imprMatrices(N, mC);
+  
+
+
+  printf("\nFin del Programa \n");
+  return 0;
+
+  
+}
